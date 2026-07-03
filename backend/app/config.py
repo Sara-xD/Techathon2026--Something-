@@ -23,8 +23,13 @@ ROOMS = {
 }
 
 # Every room has the same devices.
+# NOTE: The problem statement is internally inconsistent -- it says "2 fans and
+# 3 lights" (=5/room) but also repeatedly requires "6 devices per room, 18
+# devices total" and "all 18 devices". We honour the stated hard requirement of
+# 18 total / 6 per room by using 2 fans + 4 lights, which keeps the floor plan's
+# fan count intact. See README for the full rationale.
 FANS_PER_ROOM = 2
-LIGHTS_PER_ROOM = 3
+LIGHTS_PER_ROOM = 4
 
 # Realistic power draw when a device is ON (Watts).
 FAN_WATTS = 60

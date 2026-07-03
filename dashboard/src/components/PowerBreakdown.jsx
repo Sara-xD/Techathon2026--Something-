@@ -1,6 +1,8 @@
 // Live power meter: total draw + a per-room bar breakdown.
-// Each room's theoretical max is 2 fans (60W) + 3 lights (15W) = 165W.
-const ROOM_MAX_W = 2 * 60 + 3 * 15
+// A room's theoretical max = sum of every device's rated wattage (all ON).
+function roomMaxWatts(room) {
+  return room.devices.reduce((sum, d) => sum + d.watts, 0)
+}
 
 export default function PowerBreakdown({ usage, rooms }) {
   return (
@@ -14,7 +16,7 @@ export default function PowerBreakdown({ usage, rooms }) {
 
       <div className="power-bars">
         {rooms.map((room) => {
-          const pct = Math.round((room.power / ROOM_MAX_W) * 100)
+          const pct = Math.round((room.power / roomMaxWatts(room)) * 100)
           return (
             <div key={room.room} className="power-bar-row">
               <div className="power-bar-label">
