@@ -38,7 +38,7 @@ _announced: set[str] = set()
 
 @bot.event
 async def on_ready():
-    print(f"[bot] Logged in as {bot.user} -- watching the office.")
+    print(f"[bot] Logged in as {bot.user} -- watching the office.", flush=True)
     if not alert_watcher.is_running():
         alert_watcher.start()
 
