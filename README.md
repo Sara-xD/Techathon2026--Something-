@@ -217,6 +217,22 @@ pin-mapping tables, connection list, and electrical reasoning is in
 [`diagrams/circuit-guide.md`](diagrams/circuit-guide.md). Build it in Wokwi and add the
 screenshot + share link there.
 
+## 12. Running the tests
+
+A pytest suite covers the core logic — device layout, energy accrual, the alert
+engine (office-hours and 2-hour boundaries), the simulated clock, and the bot's
+factual formatters. No network, Discord, or Gemini calls; it runs in well under a
+second.
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+```
+37 passed in 0.04s
+```
+
 ---
 
 ## Attributions
