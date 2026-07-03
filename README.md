@@ -23,6 +23,10 @@ Both read from a **single source of truth**, so they can never disagree about re
 
 ![Dashboard](docs/dashboard.png)
 
+The dashboard is fully responsive and works on phones too:
+
+<img src="docs/dashboard-mobile.png" alt="Mobile dashboard" width="280"/>
+
 ---
 
 ## 1. Problem understanding
