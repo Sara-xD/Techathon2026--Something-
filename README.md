@@ -17,7 +17,7 @@ Both read from a **single source of truth**, so they can never disagree about re
 
 | | Link |
 |---|---|
-| Demo video (≤ 3 min) | _add link_ |
+| Demo video (≤ 3 min) | **<https://drive.google.com/file/d/1pmysNCxkV6s7U8CqzfTEzU-jGQ4Bq5vt/view?usp=sharing>** |
 | Live dashboard | **<https://office-energy-monitor.onrender.com>** — one-click deploy in [DEPLOY.md](DEPLOY.md) |
 | Wokwi circuit | **<https://wokwi.com/projects/468588825338810369>** — build notes in [circuit-guide.md](diagrams/circuit-guide.md) |
 
