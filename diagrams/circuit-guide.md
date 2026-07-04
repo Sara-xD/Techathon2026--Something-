@@ -48,6 +48,7 @@ front-end is swapped for safe 3.3 V equivalents.
 | 6 | Slide switch (or pushbutton) | Optocoupler state output per device (2 fans + 4 lights) |
 | 6 | LED + 220 Ω resistor | Visual "device is ON" indicator |
 | 1 | Potentiometer (10 kΩ) | CT-clamp analog current signal for the room |
+| 1 | LCD1602 (I2C) | On-board readout: live power (W) + how many devices are ON |
 | — | Jumper wires, common GND | Wiring |
 
 ---
@@ -74,6 +75,17 @@ the pin's **internal pull-down** so it reads LOW when open, HIGH when the device
 
 > Pins chosen to avoid the ESP32 **strapping/flash pins** (0, 2, 6–11, 15). GPIO 34 is
 > input-only which is fine for the analog read.
+
+**On-board I2C display (LCD1602):**
+
+| Signal | Pin | Notes |
+|---|---|---|
+| SDA | GPIO 21 | I2C data |
+| SCL | GPIO 4 | I2C clock (ESP32 allows any free GPIO) |
+| VCC → 3V3, GND → GND | — | The LCD shows `Power: <W>` and `Devices: <n>/6 ON` |
+
+> Needs the **LiquidCrystal_I2C** Arduino library — in Wokwi, add "LiquidCrystal I2C"
+> via the Library Manager if it isn't picked up automatically.
 
 ---
 

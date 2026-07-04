@@ -17,6 +17,8 @@
 // sketch also works if you save it as main.cpp.
 // -----------------------------------------------------------------------------
 #include <Arduino.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>   // Wokwi: add "LiquidCrystal I2C" in the Library Manager
 
 const int   SENSE_PINS[6] = {13, 14, 23, 22, 18, 19};   // Fan1, Fan2, Light1..4
 const int   LED_PINS[6]   = {12, 27, 26, 25, 33, 32};   // mirror LEDs
@@ -25,22 +27,34 @@ const int   RATED_W[6]    = {60, 60, 15, 15, 15, 15};   // rated watts per devic
 const int   CURRENT_PIN   = 34;                         // ADC1 (ADC2 clashes with Wi-Fi)
 const int   ROOM_MAX_W    = 2 * 60 + 4 * 15;            // one room all-on = 180 W (current sensor full-scale)
 
+// On-board 16x2 I2C LCD showing live power + how many devices are on.
+// I2C on SDA=GPIO21, SCL=GPIO4 (both free; ESP32 lets you pick any I2C pins).
+const int   I2C_SDA = 21;
+const int   I2C_SCL = 4;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
 void setup() {
   Serial.begin(115200);
   for (int i = 0; i < 6; i++) {
     pinMode(SENSE_PINS[i], INPUT_PULLDOWN);  // defined LOW when a device is off
     pinMode(LED_PINS[i], OUTPUT);
   }
+  Wire.begin(I2C_SDA, I2C_SCL);
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Office Watch");
 }
 
 void loop() {
   int    estWatts = 0;
+  int    onCount  = 0;
   String devices  = "";
 
   for (int i = 0; i < 6; i++) {
     bool on = digitalRead(SENSE_PINS[i]) == HIGH;
     digitalWrite(LED_PINS[i], on ? HIGH : LOW);        // mirror state on the board
-    if (on) estWatts += RATED_W[i];
+    if (on) { estWatts += RATED_W[i]; onCount++; }
     devices += String("\"") + LABELS[i] + "\":" + (on ? "true" : "false");
     if (i < 5) devices += ",";
   }
@@ -48,6 +62,16 @@ void loop() {
   // ACS712 / potentiometer -> 0..4095 -> plausible 0..180 W room current.
   int raw          = analogRead(CURRENT_PIN);
   int sensedWatts  = map(raw, 0, 4095, 0, ROOM_MAX_W);
+
+  // Live summary on the LCD (trailing spaces clear leftover digits).
+  lcd.setCursor(0, 0);
+  lcd.print("Power: ");
+  lcd.print(estWatts);
+  lcd.print("W    ");
+  lcd.setCursor(0, 1);
+  lcd.print("Devices: ");
+  lcd.print(onCount);
+  lcd.print("/6 ON ");
 
   // One JSON line = the payload a real node would POST to the backend /ingest
   // endpoint. (In this project the backend simulator produces this same shape.)
