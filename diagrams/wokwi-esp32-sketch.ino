@@ -11,7 +11,12 @@
 //   - each mirror LED shows what is ON at a glance
 //
 // Pin map matches diagrams/circuit-guide.md and circuit-wiring-diagram.svg.
+//
+// NOTE: this is an Arduino sketch (C++). The file must end in .ino or .cpp --
+// NOT .c. In a .ino file the include below is automatic; it's kept here so the
+// sketch also works if you save it as main.cpp.
 // -----------------------------------------------------------------------------
+#include <Arduino.h>
 
 const int   SENSE_PINS[6] = {13, 14, 23, 22, 18, 19};   // Fan1, Fan2, Light1..4
 const int   LED_PINS[6]   = {12, 27, 26, 25, 33, 32};   // mirror LEDs
