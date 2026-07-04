@@ -165,6 +165,8 @@ into `ALERT_CHANNEL_ID`.
 
 ### 5.4 Deploy a live URL (for judging)
 
+**Live now:** <https://office-energy-monitor.onrender.com>
+
 The whole app ships as **one web service** — a Docker image builds the dashboard and
 runs the FastAPI backend that serves it, so the dashboard, REST API, and WebSocket share
 a single URL (no CORS, `wss://` works automatically). Deploy to **Render's free tier**
@@ -178,6 +180,12 @@ docker build -t office-energy-monitor . && docker run --rm -p 8000:8000 office-e
 Then point the Discord bot at the deployed backend (`BACKEND_URL=https://…onrender.com`)
 so it and the web dashboard read the **same** live state. Full click-by-click steps:
 **[DEPLOY.md](DEPLOY.md)**.
+
+> **Free-tier behaviour (important for the demo).** A free Render service **sleeps after
+> ~15 min idle** and cold-starts in ~50 s on the next request; the in-memory simulator
+> restarts fresh each time (no data to lose). The URL itself stays stable. **Open the link
+> once ~1 minute before presenting** so it's warm when judges click. For zero cold-start,
+> upgrade to Render's paid Starter plan or add a uptime pinger that hits `/healthz`.
 
 ---
 
