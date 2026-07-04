@@ -3,10 +3,13 @@
 Exposes REST endpoints (used by the Discord bot and for debugging) and a
 WebSocket that pushes the full state snapshot to dashboards in real time.
 """
+import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from . import config
 from .clock import build_clock
@@ -62,7 +65,7 @@ app.add_middleware(
 
 
 # --- REST -----------------------------------------------------------------
-@app.get("/")
+@app.get("/healthz")
 def health():
     return {"status": "ok", "service": "office-energy-monitor"}
 
@@ -138,3 +141,15 @@ async def ws_live(ws: WebSocket):
         manager.disconnect(ws)
     except Exception:
         manager.disconnect(ws)
+
+
+# --- Static dashboard (single-service production deploy) -------------------
+# When the built dashboard is present (Docker/Render build), serve it from the
+# same origin as the API + WebSocket. One URL, no CORS, wss works automatically.
+# Mounted LAST so it never shadows the /api and /ws routes above. Absent in
+# local dev, where the dashboard runs on its own Vite server (:5173).
+_STATIC_DIR = os.getenv("STATIC_DIR") or str(
+    Path(__file__).resolve().parents[2] / "dashboard" / "dist"
+)
+if Path(_STATIC_DIR).is_dir():
+    app.mount("/", StaticFiles(directory=_STATIC_DIR, html=True), name="dashboard")

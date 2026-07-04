@@ -1,0 +1,22 @@
+# Render Blueprint -- deploys the whole app as ONE web service.
+# The Docker image builds the React dashboard and runs the FastAPI backend that
+# serves it, so the dashboard, REST API, and WebSocket all live on one URL.
+#
+# To deploy: push this repo to GitHub, then on render.com choose
+# "New +" -> "Blueprint" and point it at the repo. See DEPLOY.md for details.
+services:
+  - type: web
+    name: office-energy-monitor
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      # Accelerated sim clock (1 real sec = 60 sim sec) so a short demo shows a
+      # full office day. Tune if you want it slower/faster during judging.
+      - key: SIM_SPEED
+        value: "60"
+      # Live wattage jitter so the power meter looks like a real sensor.
+      - key: WATT_JITTER_PCT
+        value: "0.05"

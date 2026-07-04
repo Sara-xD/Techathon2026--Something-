@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { API_BASE } from './api'
 
 // Single source of truth lives in the backend; we just subscribe to its
 // WebSocket and render whatever snapshot it pushes. Auto-reconnects so the
 // dashboard survives a backend restart during the demo.
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
 const WS_URL = API_BASE.replace(/^http/, 'ws') + '/ws/live'
 
 export function useLiveState() {

@@ -18,7 +18,7 @@ Both read from a **single source of truth**, so they can never disagree about re
 | | Link |
 |---|---|
 | Demo video (≤ 3 min) | _add link_ |
-| Live dashboard (if deployed) | _add link_ |
+| Live dashboard (if deployed) | _add link_ — one-click deploy in [DEPLOY.md](DEPLOY.md) |
 | Wokwi circuit | _add link (see `diagrams/circuit-guide.md`)_ |
 
 ![Dashboard](docs/dashboard.png)
@@ -163,13 +163,29 @@ into `ALERT_CHANNEL_ID`.
 > The bot works **without** a Gemini key too — it falls back to clear, friendly factual
 > replies. Gemini only makes the wording warmer.
 
+### 5.4 Deploy a live URL (for judging)
+
+The whole app ships as **one web service** — a Docker image builds the dashboard and
+runs the FastAPI backend that serves it, so the dashboard, REST API, and WebSocket share
+a single URL (no CORS, `wss://` works automatically). Deploy to **Render's free tier**
+straight from this repo via the included [`render.yaml`](render.yaml):
+
+```bash
+docker build -t office-energy-monitor . && docker run --rm -p 8000:8000 office-energy-monitor
+# → http://localhost:8000  (production image; same as what Render runs)
+```
+
+Then point the Discord bot at the deployed backend (`BACKEND_URL=https://…onrender.com`)
+so it and the web dashboard read the **same** live state. Full click-by-click steps:
+**[DEPLOY.md](DEPLOY.md)**.
+
 ---
 
 ## 6. API reference
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/` | Health check |
+| GET | `/` | The web dashboard (in a production build); JSON health check at `/healthz` |
 | GET | `/api/state` | Full snapshot (devices, rooms, usage, alerts) — the bot's one-stop call |
 | GET | `/api/devices?room=<id>` | All devices, optionally filtered by room |
 | GET | `/api/rooms` | Per-room summaries |
