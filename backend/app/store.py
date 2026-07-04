@@ -2,6 +2,13 @@
 
 Both the web dashboard (via WebSocket) and the Discord bot (via REST) read
 from this one store. Nothing else holds device state.
+
+Design trade-off: state is kept in-memory rather than in a database. For 18
+devices that is the simplest choice and is trivially fast for both the
+WebSocket broadcast loop and REST reads; the cost is that state resets on
+restart. To persist it, swap this class's internals for SQLite/SQLModel behind
+the same public methods (`set_status`, `toggle`, `room_devices`, `usage`) --
+those methods are the seam to do it behind.
 """
 import random
 from dataclasses import dataclass, field

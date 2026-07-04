@@ -267,6 +267,32 @@ pytest
 
 ---
 
+## 13. Design decisions & trade-offs
+
+- **One in-memory store as the single source of truth.** Both interfaces read from
+  `DeviceStore`; nothing else holds state, so the dashboard and bot can never disagree.
+  Trade-off: state resets on restart. For 18 devices a database is overkill; to persist,
+  swap `DeviceStore`'s internals for SQLite/SQLModel behind the same methods
+  (`set_status`, `room_devices`, `usage`) — that's the seam.
+- **18 devices, not 15.** The brief contradicts itself (2 fans + 3 lights = 15, but it
+  repeatedly requires "18 total / 6 per room"); we honour the stated hard requirement. See §1.
+- **Accelerated simulated clock.** Two alert rules are time-based (after-hours,
+  on-for-2h). A virtual clock lets a 3-minute demo show a full day and both alerts firing,
+  without faking the alerts — they're still computed live from real state.
+- **±5 % wattage jitter.** Live readings wobble around the rating so the meter looks like a
+  real current sensor, not a constant. Set `WATT_JITTER_PCT=0` for exact values (tests do).
+- **The LLM only phrases, never computes.** The bot always pulls real numbers from the
+  backend and asks Gemini to reword the tone — with a graceful factual fallback — so replies
+  are always correct even when the LLM is missing or rate-limited.
+- **Alerts derived on read, aggregated per room.** Alerts are computed from current state
+  each request (not stored). We track a true per-room "all-on since" timestamp rather than
+  approximating from individual devices, and aggregate to one alert per room to avoid a noisy
+  per-device alert flood.
+- **Full-snapshot broadcast (not deltas).** Each tick pushes the whole snapshot — trivially
+  correct and simple for 18 devices; deltas would be premature optimization here.
+
+---
+
 ## Team
 
 Techathon Nationals 2026 — Hackathon (Preliminary Round), IUT Robotics Society.
