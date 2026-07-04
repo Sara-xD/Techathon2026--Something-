@@ -136,6 +136,10 @@ loop():
 In our submission the **backend simulator** produces exactly this shape of data, so the
 firmware above is the drop-in replacement if real hardware were attached.
 
+**Ready-to-paste firmware:** the complete Arduino sketch is in
+[`wokwi-esp32-sketch.ino`](wokwi-esp32-sketch.ino) — paste it into the Wokwi code
+editor after laying out the components below.
+
 ---
 
 ## 7. Wokwi vs Tinkercad — pick Wokwi
