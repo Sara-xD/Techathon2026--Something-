@@ -108,8 +108,9 @@ All grounds are common. Every input GPIO uses `INPUT_PULLDOWN`.
 - **ADC choice:** current sensing must sit on **ADC1** (GPIO 32–39) because **ADC2 is
   used by the Wi-Fi radio** — a classic ESP32 gotcha.
 - **Current → power:** a real CT gives RMS current; multiply by mains voltage for Watts.
-  In simulation the pot's ADC value (0–4095) is linearly scaled to a plausible 0–540 W
-  room range (the all-on load of one room).
+  In simulation the pot's ADC value (0–4095) is linearly scaled to a plausible 0–180 W
+  range — one room's all-on load (2 × 60 W fans + 4 × 15 W lights). (The whole office is
+  180 × 3 = 540 W.)
 - **Resistors:** 220 Ω limits LED current to a safe ~6 mA at 3.3 V.
 - **Power budget:** the ESP32 (USB 5 V) easily drives six indicator LEDs; real relays/CTs
   would use their own supply, not the 3.3 V rail.
@@ -128,7 +129,7 @@ loop():
      state = digitalRead(devicePin)        // HIGH = ON
      digitalWrite(ledPin, state)           // mirror on the board
   raw   = analogRead(34)                    // 0..4095 from CT/pot
-  watts = map(raw, 0, 4095, 0, 540)         // room current -> Watts
+  watts = map(raw, 0, 4095, 0, 180)         // one room all-on = 180 W
   // POST { room, devices:[{id,status}], watts } to the backend /ingest endpoint
   // (in this project the backend simulator generates this data directly)
 ```
@@ -151,6 +152,18 @@ editor after laying out the components below.
 | Shareable link + diagram | ✅ | limited |
 
 Because the design centres on an **ESP32 reporting over Wi-Fi**, **build it in Wokwi**.
-Save the screenshot as `diagrams/circuit-wokwi.png` and paste the share link below.
+
+---
+
+## 8. Building it in Wokwi (quick steps)
+
+1. **wokwi.com → New Project → ESP32.**
+2. Open the code tab and paste [`wokwi-esp32-sketch.ino`](wokwi-esp32-sketch.ino).
+3. In the diagram, click **+** and add: **6 slide switches**, **6 LEDs**, **6 × 220 Ω resistors**, **1 potentiometer**.
+4. Wire per §3–§4: each switch → **3V3** and its sense GPIO; each LED anode → its GPIO through a 220 Ω resistor, cathode → **GND**; pot outer pins → **3V3** / **GND**, wiper → **GPIO 34**.
+5. Press **▶**. Flip a switch → its LED lights and `estWatts` rises; turn the pot → `sensedWatts` changes in the Serial Monitor.
+6. **Screenshot** the running board → save as `diagrams/circuit-wokwi.png`. Click **Share**, copy the link, and paste it below.
+
+> Short on time? A subset (2–3 switches + the pot) is still a valid *representative* circuit — the brief doesn't require wiring every device.
 
 **Wokwi share link:** _(add after building)_

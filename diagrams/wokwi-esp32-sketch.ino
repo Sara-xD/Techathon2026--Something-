@@ -18,7 +18,7 @@ const int   LED_PINS[6]   = {12, 27, 26, 25, 33, 32};   // mirror LEDs
 const char* LABELS[6]     = {"Fan 1", "Fan 2", "Light 1", "Light 2", "Light 3", "Light 4"};
 const int   RATED_W[6]    = {60, 60, 15, 15, 15, 15};   // rated watts per device
 const int   CURRENT_PIN   = 34;                         // ADC1 (ADC2 clashes with Wi-Fi)
-const int   ROOM_MAX_W    = 6 * 60;                     // full-scale for the current sensor
+const int   ROOM_MAX_W    = 2 * 60 + 4 * 15;            // one room all-on = 180 W (current sensor full-scale)
 
 void setup() {
   Serial.begin(115200);
@@ -40,7 +40,7 @@ void loop() {
     if (i < 5) devices += ",";
   }
 
-  // ACS712 / potentiometer -> 0..4095 -> plausible 0..360 W room current.
+  // ACS712 / potentiometer -> 0..4095 -> plausible 0..180 W room current.
   int raw          = analogRead(CURRENT_PIN);
   int sensedWatts  = map(raw, 0, 4095, 0, ROOM_MAX_W);
 
