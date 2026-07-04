@@ -27,6 +27,14 @@ The dashboard is fully responsive and works on phones too:
 
 <img src="docs/dashboard-mobile.png" alt="Mobile dashboard" width="280"/>
 
+**What the dashboard shows** — all live, with **no page refresh** (WebSocket):
+
+- 🟢 **Device status panel** — all **15 devices grouped by room**, each with an on/off indicator
+- ⚡ **Live power meter** — total office draw in **Watts** + a **per-room** breakdown
+- 🔔 **Active alerts panel** — after-hours and room-all-on, each **timestamped**
+- 🏢 **Animated floor plan (bonus)** — **lights glow when ON, fans spin when running**
+- 🖱️ **Click any device to toggle it** — the change broadcasts to every client *and* the bot instantly
+
 ---
 
 ## 1. Problem understanding
