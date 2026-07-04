@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="wire" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#334155"/>
+    </marker>
+    <style>
+      .title { font-size: 22px; font-weight: 700; fill: #0f172a; }
+      .sub { font-size: 13px; fill: #64748b; }
+      .box { fill: #ffffff; stroke: #3b82f6; stroke-width: 2; }
+      .box-esp { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2.5; }
+      .box-sensor { fill: #ecfdf5; stroke: #10b981; stroke-width: 2; }
+      .box-dev { fill: #fff7ed; stroke: #f59e0b; stroke-width: 1.5; }
+      .h { font-size: 14px; font-weight: 700; fill: #1d4ed8; }
+      .h-green { font-size: 14px; font-weight: 700; fill: #047857; }
+      .t { font-size: 12px; fill: #334155; }
+      .pin { font-size: 12px; fill: #1e3a8a; font-weight: 600; }
+      .wire { stroke: #334155; stroke-width: 1.6; fill: none; marker-end: url(#wire); }
+      .mains { stroke: #ef4444; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+      .lgd { font-size: 12px; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1180" height="760" fill="#f8fafc"/>
+  <text x="40" y="44" class="title">Representative Circuit — One Room (ESP32: state sensing + current sensing)</text>
+  <text x="40" y="66" class="sub">2 fans + 4 lights. Real design uses AC optocouplers per device + a CT/ACS712 current clamp; Wokwi stand-ins in brackets. Full pin table: circuit-guide.md</text>
+
+  <!-- ESP32 -->
+  <rect x="40" y="110" width="200" height="470" rx="12" class="box-esp"/>
+  <text x="60" y="140" class="h">ESP32 DevKit V1</text>
+  <text x="60" y="168" class="pin">3V3 ●</text>
+  <text x="60" y="196" class="pin">GPIO13 ● Fan 1 sense</text>
+  <text x="60" y="220" class="pin">GPIO14 ● Fan 2 sense</text>
+  <text x="60" y="244" class="pin">GPIO16 ● Light 1 sense</text>
+  <text x="60" y="268" class="pin">GPIO17 ● Light 2 sense</text>
+  <text x="60" y="292" class="pin">GPIO18 ● Light 3 sense</text>
+  <text x="60" y="316" class="pin">GPIO19 ● Light 4 sense</text>
+  <text x="60" y="348" class="pin">GPIO12/25/26 ●</text>
+  <text x="60" y="368" class="pin">GPIO27/32/33 ● mirror LEDs</text>
+  <text x="60" y="400" class="pin">GPIO34 (ADC1) ● current</text>
+  <text x="60" y="432" class="pin">5V ●</text>
+  <text x="60" y="456" class="pin">GND ●</text>
+  <text x="60" y="500" class="t">All sense inputs use</text>
+  <text x="60" y="518" class="t">INPUT_PULLDOWN. ADC1 is</text>
+  <text x="60" y="536" class="t">used (ADC2 clashes with Wi-Fi).</text>
+
+  <!-- Sense front-end (optocouplers) -->
+  <rect x="360" y="110" width="270" height="320" rx="12" class="box"/>
+  <text x="380" y="140" class="h">Per-device ON/OFF sense</text>
+  <text x="380" y="160" class="t">AC optocoupler  [Wokwi: switch]</text>
+  <text x="380" y="192" class="t">Fan 1 opto OUT → GPIO13</text>
+  <text x="380" y="216" class="t">Fan 2 opto OUT → GPIO14</text>
+  <text x="380" y="240" class="t">Light 1 opto OUT → GPIO16</text>
+  <text x="380" y="264" class="t">Light 2 opto OUT → GPIO17</text>
+  <text x="380" y="288" class="t">Light 3 opto OUT → GPIO18</text>
+  <text x="380" y="312" class="t">Light 4 opto OUT → GPIO19</text>
+  <text x="380" y="348" class="t">Each opto's LED side sits across</text>
+  <text x="380" y="366" class="t">the device's live line; its transistor</text>
+  <text x="380" y="384" class="t">gives the ESP32 an isolated 3.3V</text>
+  <text x="380" y="402" class="t">HIGH when that device is energised.</text>
+
+  <!-- Current sensor -->
+  <rect x="360" y="460" width="270" height="120" rx="12" class="box-sensor"/>
+  <text x="380" y="488" class="h-green">Room current sensor</text>
+  <text x="380" y="508" class="t">ACS712 / SCT-013 clamp</text>
+  <text x="380" y="526" class="t">[Wokwi: potentiometer]</text>
+  <text x="380" y="552" class="t">OUT → GPIO34 · VCC → 5V · GND → GND</text>
+  <text x="380" y="570" class="t">In series with the room's live feed → Watts.</text>
+
+  <!-- Devices (mains side) -->
+  <rect x="770" y="110" width="240" height="320" rx="12" class="box-dev"/>
+  <text x="790" y="140" class="h" fill="#b45309">Room devices (220V AC)</text>
+  <text x="790" y="168" class="t">Fan 1   [Wokwi: DC motor]</text>
+  <text x="790" y="192" class="t">Fan 2   [Wokwi: DC motor]</text>
+  <text x="790" y="216" class="t">Light 1 [Wokwi: LED + 220Ω]</text>
+  <text x="790" y="240" class="t">Light 2 [Wokwi: LED + 220Ω]</text>
+  <text x="790" y="264" class="t">Light 3 [Wokwi: LED + 220Ω]</text>
+  <text x="790" y="288" class="t">Light 4 [Wokwi: LED + 220Ω]</text>
+  <text x="790" y="326" class="t">Mirror LEDs echo each sensed</text>
+  <text x="790" y="344" class="t">state on the board so the demo</text>
+  <text x="790" y="362" class="t">shows what is ON at a glance.</text>
+  <text x="790" y="398" class="t">Fully isolated from ESP32 logic —</text>
+  <text x="790" y="416" class="t">the opto/CT is the only bridge.</text>
+
+  <!-- wires -->
+  <path class="wire" d="M240,205 L356,205"/>
+  <path class="wire" d="M240,250 L356,250"/>
+  <path class="wire" d="M240,300 L356,300"/>
+  <path class="wire" d="M240,400 L356,505"/>
+  <text x="250" y="382" class="lgd">ADC</text>
+  <path class="mains" d="M630,250 L766,250"/>
+  <path class="mains" d="M630,500 L740,500 L740,300 L766,300"/>
+  <text x="648" y="240" class="lgd">senses live line</text>
+
+  <!-- legend -->
+  <rect x="770" y="460" width="370" height="120" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="790" y="486" class="h" fill="#334155">Legend</text>
+  <line x1="790" y1="506" x2="820" y2="506" class="wire"/>
+  <text x="828" y="510" class="lgd">3.3V/5V logic wiring — built in Wokwi</text>
+  <line x1="790" y1="530" x2="820" y2="530" class="mains"/>
+  <text x="828" y="534" class="lgd">220V mains path — conceptual only (not built)</text>
+  <text x="790" y="560" class="lgd">Repeat this room ×3 (or 1 ESP32 per room) for the full office.</text>
+</svg>

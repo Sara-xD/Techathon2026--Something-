@@ -23,11 +23,12 @@
   <text x="60" y="140" class="box-title" fill="#047857">Simulated Device Layer</text>
   <text x="60" y="164" class="box-text">18 devices · 3 rooms</text>
   <text x="60" y="182" class="box-text">6 fans (60W) + 12 lights (15W)</text>
-  <text x="60" y="206" class="box-text">asyncio simulator loop</text>
+  <text x="60" y="206" class="box-text">asyncio simulator loop (SIM_TICK)</text>
   <text x="60" y="224" class="box-text">• toggles state over time</text>
-  <text x="60" y="242" class="box-text">• status, watts, room,</text>
-  <text x="60" y="260" class="box-text">&#160;&#160;last-changed, actor</text>
-  <text x="60" y="280" class="box-text" fill="#047857">(stands in for ESP32)</text>
+  <text x="60" y="242" class="box-text">• per device: status, watts,</text>
+  <text x="60" y="260" class="box-text">&#160;&#160;room, last-changed, actor</text>
+  <text x="60" y="278" class="box-text">• ±5% wattage jitter (live meter)</text>
+  <text x="60" y="298" class="box-text" fill="#047857">(stands in for ESP32)</text>
 
   <!-- 2. Shared Backend -->
   <rect x="330" y="90" width="290" height="380" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/>
@@ -44,15 +45,17 @@
   <text x="366" y="264" class="box-title" font-size="13" fill="#1e3a8a">Alert Engine</text>
   <text x="366" y="282" class="box-text">after-hours · room-all-on &gt; 2h</text>
 
-  <rect x="352" y="306" width="120" height="70" rx="10" fill="#ffffff" stroke="#93c5fd"/>
-  <text x="366" y="328" class="box-title" font-size="13" fill="#1e3a8a">REST API</text>
-  <text x="366" y="346" class="box-text">/api/state</text>
-  <text x="366" y="362" class="box-text">/devices /usage</text>
+  <rect x="352" y="306" width="120" height="80" rx="10" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="366" y="326" class="box-title" font-size="13" fill="#1e3a8a">REST API</text>
+  <text x="366" y="344" class="box-text">/state /devices /rooms</text>
+  <text x="366" y="360" class="box-text">/usage /alerts</text>
+  <text x="366" y="376" class="box-text">POST …/toggle</text>
 
-  <rect x="478" y="306" width="120" height="70" rx="10" fill="#ffffff" stroke="#93c5fd"/>
-  <text x="492" y="328" class="box-title" font-size="13" fill="#1e3a8a">WebSocket</text>
-  <text x="492" y="346" class="box-text">/ws/live</text>
-  <text x="492" y="362" class="box-text">push snapshots</text>
+  <rect x="478" y="306" width="120" height="80" rx="10" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="492" y="326" class="box-title" font-size="13" fill="#1e3a8a">WebSocket</text>
+  <text x="492" y="344" class="box-text">/ws/live</text>
+  <text x="492" y="360" class="box-text">full snapshot every</text>
+  <text x="492" y="376" class="box-text">tick + on any change</text>
 
   <text x="350" y="410" class="box-text" font-style="italic">One process holds the only copy of device state.</text>
   <text x="350" y="428" class="box-text" font-style="italic">Both interfaces read from here — they can never disagree.</text>
@@ -61,10 +64,10 @@
   <rect x="710" y="110" width="200" height="140" rx="12" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
   <text x="730" y="140" class="box-title" fill="#6d28d9">Web Dashboard</text>
   <text x="730" y="162" class="box-text">React (Vite)</text>
-  <text x="730" y="180" class="box-text">• live device panel</text>
+  <text x="730" y="180" class="box-text">• live device panel (click to toggle)</text>
   <text x="730" y="198" class="box-text">• power meter + per-room</text>
   <text x="730" y="216" class="box-text">• alerts, animated floor plan</text>
-  <text x="730" y="238" class="box-text" fill="#6d28d9">updates with no refresh</text>
+  <text x="730" y="238" class="box-text" fill="#6d28d9">updates with no refresh · light/dark</text>
 
   <!-- 3b. Discord Bot -->
   <rect x="710" y="300" width="200" height="150" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
@@ -73,7 +76,7 @@
   <text x="730" y="370" class="box-text">!status !room !usage</text>
   <text x="730" y="388" class="box-text">!alerts !help</text>
   <text x="730" y="410" class="box-text">proactive alert posts</text>
-  <text x="730" y="432" class="box-text" fill="#4338ca">friendly, not robotic</text>
+  <text x="730" y="432" class="box-text" fill="#4338ca">friendly · mock-CLI without a token</text>
 
   <!-- 4. Gemini -->
   <rect x="710" y="500" width="200" height="90" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>

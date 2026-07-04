@@ -106,7 +106,13 @@ The bot never keeps its own state — it always asks the backend, which is what 
 
 **Prerequisites:** Python 3.10+, Node 18+, and (optional) a Discord bot token + Gemini API key.
 
-Run the three parts in **three terminals**. The backend must be up first.
+**Quick start (one command).** After the one-time setup in §5.1–5.3 (venvs + `npm install`), you can launch all three services together:
+
+```bash
+./run.sh      # starts backend + dashboard + bot; Ctrl-C stops all
+```
+
+Or run the three parts in **three terminals** (backend must be up first):
 
 ### 5.1 Backend (start this first)
 
@@ -143,6 +149,11 @@ cp .env.example .env             # fill in DISCORD_TOKEN, ALERT_CHANNEL_ID, GEMI
 python bot.py
 ```
 
+**No Discord token? Test the bot instantly.** If `DISCORD_TOKEN` is unset, `python bot.py`
+starts a **local mock CLI** running the *exact same command handlers* the Discord bot uses —
+type `!status`, `!room work1`, `!usage`, `!alerts` right in the terminal, and proactive
+alerts print there too. Add a token later and the identical logic runs in real Discord.
+
 **Creating the Discord bot:** in the [Discord Developer Portal](https://discord.com/developers/applications)
 create an application → **Bot** → copy the token → enable **Message Content Intent** →
 invite it to your server with the *Send Messages* + *Read Message History* permissions.
@@ -165,7 +176,8 @@ into `ALERT_CHANNEL_ID`.
 | GET | `/api/rooms/{room}` | One room (`drawing`, `work1`, `work2`) |
 | GET | `/api/usage` | Total watts, per-room watts, today's kWh |
 | GET | `/api/alerts` | Active alerts |
-| WS | `/ws/live` | Pushes a full snapshot every simulator tick |
+| POST | `/api/devices/{id}/toggle` | Manually flip one device (dashboard click) — broadcast to all clients |
+| WS | `/ws/live` | Pushes a full snapshot every simulator tick and on any change |
 
 ## 7. Discord bot commands
 
@@ -199,8 +211,12 @@ Each device carries: `status` (on/off), `watts` (fan 60 W, light 15 W), `room`,
 `last_changed` timestamp, and `last_changed_by`. The simulator:
 
 - flips devices toward a **time-of-day occupancy** (busy 9–5, winding down after),
+- **jitters each ON device's wattage ±5%** every tick so the meter reads like a live
+  current sensor rather than a constant (`WATT_JITTER_PCT`, set to 0 for exact values),
 - **accrues energy** (`Wh += total_watts × Δt`) for today's kWh, resetting at sim-midnight,
 - tracks **per-room continuous-on** time for the 2-hour alert.
+
+The dashboard is also **interactive** — click any device to toggle it (`POST /api/devices/{id}/toggle`); the change broadcasts to every client and the bot at once.
 
 Per the brief, the only human names used anywhere are the two provided dummy actors,
 **Nafisa Rahman** and **Tanvir Hossain** (shown as "last changed by"). No other names are invented.
@@ -218,8 +234,11 @@ Alerts are timestamped, shown live on the dashboard, and pushed to Discord.
 
 A representative one-room ESP32 schematic (state sensing + current sensing) with full
 pin-mapping tables, connection list, and electrical reasoning is in
-[`diagrams/circuit-guide.md`](diagrams/circuit-guide.md). Build it in Wokwi and add the
-screenshot + share link there.
+[`diagrams/circuit-guide.md`](diagrams/circuit-guide.md), with a companion visual wiring
+diagram in [`diagrams/circuit-wiring-diagram.svg`](diagrams/circuit-wiring-diagram.svg).
+Build it in Wokwi and add the screenshot + share link there.
+
+![Circuit wiring diagram](diagrams/circuit-wiring-diagram.png)
 
 ## 12. Running the tests
 
