@@ -1,5 +1,7 @@
+import { toggleDevice } from '../api'
+
 // One room's device panel: header summary + a grid of device chips.
-// Fans spin and lights glow when ON.
+// Fans spin and lights glow when ON. Chips are clickable to toggle the device.
 function FanIcon({ on }) {
   return (
     <svg viewBox="0 0 24 24" className={`dev-icon fan ${on ? 'on' : ''}`} width="22" height="22">
@@ -37,14 +39,20 @@ export default function RoomPanel({ room }) {
 
       <div className="device-grid">
         {room.devices.map((dev) => (
-          <div key={dev.id} className={`device-chip ${dev.status ? 'on' : 'off'}`}>
+          <button
+            key={dev.id}
+            type="button"
+            className={`device-chip ${dev.status ? 'on' : 'off'}`}
+            onClick={() => toggleDevice(dev.id)}
+            title={`Click to turn ${dev.status ? 'off' : 'on'} ${dev.label}`}
+          >
             {dev.type === 'fan' ? <FanIcon on={dev.status} /> : <LightIcon on={dev.status} />}
             <div className="device-meta">
               <span className="device-label">{dev.label}</span>
               <span className="device-state">{dev.status ? `${dev.power} W` : 'off'}</span>
             </div>
             <span className={`state-dot ${dev.status ? 'on' : 'off'}`} />
-          </div>
+          </button>
         ))}
       </div>
     </div>

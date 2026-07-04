@@ -171,11 +171,13 @@ body {
 
 .device-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
 .device-chip {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px; border-radius: 10px;
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  padding: 8px 10px; border-radius: 10px; font: inherit; color: inherit; cursor: pointer;
   background: var(--surface-chip); border: 1px solid var(--border);
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, transform 0.05s;
 }
+.device-chip:hover { border-color: var(--accent); }
+.device-chip:active { transform: scale(0.98); }
 .device-chip.on { background: rgba(79, 140, 255, 0.08); border-color: rgba(79, 140, 255, 0.4); }
 .device-meta { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .device-label { font-size: 12px; font-weight: 600; }
