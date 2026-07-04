@@ -61,8 +61,8 @@ the pin's **internal pull-down** so it reads LOW when open, HIGH when the device
 |---|---|---|
 | Fan 1   | GPIO 13 | GPIO 12 |
 | Fan 2   | GPIO 14 | GPIO 27 |
-| Light 1 | GPIO 16 | GPIO 26 |
-| Light 2 | GPIO 17 | GPIO 25 |
+| Light 1 | GPIO 23 | GPIO 26 |
+| Light 2 | GPIO 22 | GPIO 25 |
 | Light 3 | GPIO 18 | GPIO 33 |
 | Light 4 | GPIO 19 | GPIO 32 |
 
@@ -89,8 +89,8 @@ ESP32 3V3 ─┬─ switch A leg (Fan 1)      ESP32 GND ─┬─ every LED cath
 
 Fan 1  switch B leg ── GPIO 13     LED (Fan 1)  anode ── GPIO 12 ─(220Ω)─ GND
 Fan 2  switch B leg ── GPIO 14     LED (Fan 2)  anode ── GPIO 27 ─(220Ω)─ GND
-Light1 switch B leg ── GPIO 16     LED (Light1) anode ── GPIO 26 ─(220Ω)─ GND
-Light2 switch B leg ── GPIO 17     LED (Light2) anode ── GPIO 25 ─(220Ω)─ GND
+Light1 switch B leg ── GPIO 23     LED (Light1) anode ── GPIO 26 ─(220Ω)─ GND
+Light2 switch B leg ── GPIO 22     LED (Light2) anode ── GPIO 25 ─(220Ω)─ GND
 Light3 switch B leg ── GPIO 18     LED (Light3) anode ── GPIO 33 ─(220Ω)─ GND
 Light4 switch B leg ── GPIO 19     LED (Light4) anode ── GPIO 32 ─(220Ω)─ GND
 ```

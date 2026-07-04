@@ -13,7 +13,7 @@
 // Pin map matches diagrams/circuit-guide.md and circuit-wiring-diagram.svg.
 // -----------------------------------------------------------------------------
 
-const int   SENSE_PINS[6] = {13, 14, 16, 17, 18, 19};   // Fan1, Fan2, Light1..4
+const int   SENSE_PINS[6] = {13, 14, 23, 22, 18, 19};   // Fan1, Fan2, Light1..4
 const int   LED_PINS[6]   = {12, 27, 26, 25, 33, 32};   // mirror LEDs
 const char* LABELS[6]     = {"Fan 1", "Fan 2", "Light 1", "Light 2", "Light 3", "Light 4"};
 const int   RATED_W[6]    = {60, 60, 15, 15, 15, 15};   // rated watts per device

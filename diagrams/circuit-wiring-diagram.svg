@@ -30,8 +30,8 @@
   <text x="60" y="168" class="pin">3V3 ●</text>
   <text x="60" y="196" class="pin">GPIO13 ● Fan 1 sense</text>
   <text x="60" y="220" class="pin">GPIO14 ● Fan 2 sense</text>
-  <text x="60" y="244" class="pin">GPIO16 ● Light 1 sense</text>
-  <text x="60" y="268" class="pin">GPIO17 ● Light 2 sense</text>
+  <text x="60" y="244" class="pin">GPIO23 ● Light 1 sense</text>
+  <text x="60" y="268" class="pin">GPIO22 ● Light 2 sense</text>
   <text x="60" y="292" class="pin">GPIO18 ● Light 3 sense</text>
   <text x="60" y="316" class="pin">GPIO19 ● Light 4 sense</text>
   <text x="60" y="348" class="pin">GPIO12/25/26 ●</text>
@@ -49,8 +49,8 @@
   <text x="380" y="160" class="t">AC optocoupler  [Wokwi: switch]</text>
   <text x="380" y="192" class="t">Fan 1 opto OUT → GPIO13</text>
   <text x="380" y="216" class="t">Fan 2 opto OUT → GPIO14</text>
-  <text x="380" y="240" class="t">Light 1 opto OUT → GPIO16</text>
-  <text x="380" y="264" class="t">Light 2 opto OUT → GPIO17</text>
+  <text x="380" y="240" class="t">Light 1 opto OUT → GPIO23</text>
+  <text x="380" y="264" class="t">Light 2 opto OUT → GPIO22</text>
   <text x="380" y="288" class="t">Light 3 opto OUT → GPIO18</text>
   <text x="380" y="312" class="t">Light 4 opto OUT → GPIO19</text>
   <text x="380" y="348" class="t">Each opto's LED side sits across</text>
