@@ -73,21 +73,30 @@ The bot never keeps its own state — it always asks the backend, which is what 
 .
 ├── backend/            FastAPI shared backend (single source of truth)
 │   └── app/
-│       ├── config.py      fixed office layout, power ratings, office hours
+│       ├── config.py      fixed office layout, power ratings, office hours, jitter
 │       ├── clock.py       accelerated simulated clock
-│       ├── store.py       DeviceStore: 18 devices + energy + continuity
+│       ├── store.py       DeviceStore: 18 devices + energy + continuity + toggle
 │       ├── alerts.py      after-hours & room-all-on alert engine
 │       ├── simulator.py   asyncio loop that drives the dummy data
 │       └── main.py        REST + WebSocket app
 ├── dashboard/          React + Vite real-time dashboard
-│   └── src/components/    KPI cards, floor plan, room panels, power, alerts
-├── bot/                discord.py bot + Gemini humanizer
+│   └── src/
+│       ├── components/    KPI cards, floor plan, room panels, power, alerts
+│       ├── useLiveState.js  WebSocket subscription (auto-reconnect)
+│       ├── useTheme.js      light/dark theme (persisted, follows OS)
+│       └── api.js           REST helper (device toggle)
+├── bot/                discord.py bot + Gemini + mock CLI
 │   ├── backend_client.py  async REST client
 │   ├── formatters.py      accurate factual text (source of numbers)
 │   ├── humanizer.py       Gemini rephrasing + graceful fallback
-│   └── bot.py             commands + proactive alert task
-├── diagrams/           system diagram (SVG/PNG) + circuit build guide
-└── docs/               screenshots
+│   ├── handlers.py        shared command logic (Discord + mock CLI)
+│   ├── mock_cli.py        local console mode (no Discord token needed)
+│   └── bot.py             Discord commands + proactive alert task
+├── diagrams/           system diagram + circuit guide + wiring diagram (SVG/PNG)
+├── tests/              pytest suite (39 tests, no network/Discord/Gemini)
+├── docs/               screenshots (dark, light, mobile)
+├── run.sh              one-command launcher (backend + dashboard + bot)
+└── requirements-dev.txt   pytest for the test suite
 ```
 
 ## 4. Tech stack
@@ -253,7 +262,7 @@ pytest
 ```
 
 ```
-37 passed in 0.04s
+39 passed in 0.04s
 ```
 
 ---
